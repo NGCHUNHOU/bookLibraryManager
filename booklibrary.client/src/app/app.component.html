@@ -1,8 +1,8 @@
 <div style="width: 80%;">
   <h1 id="tableLabel">Book Library Manager</h1>
   <p *ngIf="!books"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-  <button type="button" (click)="addBookButton($event)">Add</button>
-  <button type="button" (click)="rmBookButton($event)">Remove</button>
+  <button type="button" (click)="addBookButton()">Add</button>
+  <button type="button" (click)="rmBookButton()">Remove</button>
   <table *ngIf="books" style="margin: 20px 0">
       <thead>
           <tr>
@@ -12,7 +12,7 @@
               <th>Created Date</th>
           </tr>
       </thead>
-      <tbody>
+      <tbody #tableBookBody>
           <tr *ngFor="let book of books">
               <td>{{ book.name }}</td>
               <td>{{ book.description }}</td>

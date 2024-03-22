@@ -33,5 +33,10 @@ namespace bookLibrary.Server.Controllers
             else
                 return new List<Book>();
         }
+        [HttpPost(Name = "AddBook")]
+        public void AddBook()
+        {
+            Console.WriteLine("hello");
+        }
     }
 }
