@@ -9,11 +9,7 @@ namespace bookLibrary.Server.Data
 {
     public class bookLibraryServerContext : DbContext
     {
-        public bookLibraryServerContext (DbContextOptions<bookLibraryServerContext> options)
-            : base(options)
-        {
-        }
-
+        public bookLibraryServerContext (DbContextOptions<bookLibraryServerContext> options) : base(options) { }
         public DbSet<bookLibrary.Server.Book> tblBook { get; set; } = default!;
     }
 }
