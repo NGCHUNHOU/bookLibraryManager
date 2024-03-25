@@ -1,23 +1,25 @@
 using bookLibrary.Server.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Entity;
-using System.Threading.Tasks.Dataflow;
+//using System.Data.Entity;
+using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace bookLibrary.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BookController : ControllerBase
+    public class BookController : Controller
     {
         private readonly ILogger<BookController> _logger;
         private bookLibraryServerContext _bLContext; 
+        private HttpResponseMessage _httpResponseMessage; 
         public BookController(ILogger<BookController> logger, bookLibraryServerContext bLSContext) { 
             _logger = logger; 
             _bLContext = bLSContext;
         }
 
         [HttpGet(Name = "Book")]
-        public List<Book> Get()
+        public async Task<IActionResult> Get()
         {
             // hard code book data
             //var bookData = new List<Book>();
@@ -27,17 +29,23 @@ namespace bookLibrary.Server.Controllers
             //    bookData.Add(new Book { Name = "Weather Book", Description = "Weather Description", Author = "bar", CreatedDate = dateNow.ToString()});
             //    return bookData;
             //}
-            var bookData = _bLContext.tblBook.ToList<Book>();
-            if (bookData != null)
-                return bookData;
-            else
-                return new List<Book>();
+            var bookData = await _bLContext.tblBook.ToListAsync<Book>();
+            if (bookData == null) { 
+                return NotFound(); 
+            }
+            else {
+                return Json(bookData);
+            }
         }
         [HttpPost("/AddBook")]
-        public List<Book> AddBook()
+        public HttpResponseMessage AddBook([FromBody] Book requestBody)
         {
-            Console.WriteLine("hello");
-            return new List<Book>();
+            _bLContext.tblBook.Add(requestBody);
+            var addResult = _bLContext.SaveChanges();
+            if (addResult == 0) {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }
