@@ -80,7 +80,11 @@ export class AppComponent implements OnInit {
   }
 
   rmBookButton() {
-    this.books.pop()
+    let bookToDelete = {name:"", description: "", author: "", createdDate: ""}
+    this.http.delete<any>("/xxx", {body: bookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
+    console.log("data deleted: ", bookToDelete)
+    //this.http.delete<any>('/removebook', ).subscribe((res) => console.log(res), (err) => console.log(err))
+    //console.log("data removed: ", this.bookPostData)
   }
   getDate() {
     const today = new Date();

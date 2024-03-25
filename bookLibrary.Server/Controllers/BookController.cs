@@ -47,5 +47,15 @@ namespace bookLibrary.Server.Controllers
             }
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
+        [HttpDelete("/RemoveBook")]
+        public HttpResponseMessage RemoveBook([FromBody] Book requestBody)
+        {
+            _bLContext.tblBook.Remove(requestBody);
+            var removeResult = _bLContext.SaveChanges();
+            if (removeResult == 0) {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+        }
     }
 }
