@@ -82,14 +82,18 @@ export class AppComponent implements OnInit {
     //this.books.push({ name: "add book", description: "add book desciption", author: "book author", createdDate: this.getDate() })
   }
   getBookToRemove() {
-    let bookToRemove = {}
+    let bookToRemove = new Book()
     if (this.rowInputBox != undefined) {
       for (const ele of this.rowInputBox) {
         let curr_checkbox_inrow = ele.nativeElement.firstChild
         if (curr_checkbox_inrow.checked) {
           let curr_tablerow = curr_checkbox_inrow.parentNode.parentNode
           let childs = curr_tablerow.children
-          bookToRemove = { bookid: childs.item(1).innerText,  name: childs.item(2).innerText, description: childs.item(3).innerText, author: childs.item(4).innerText, createdDate: childs.item(5).innerText }
+          bookToRemove.bookid = parseInt(childs.item(1).innerText)
+          bookToRemove.name = childs.item(2).innerText
+          bookToRemove.description = childs.item(3).innerText
+          bookToRemove.author = childs.item(4).innerText
+          bookToRemove.createdDate = childs.item(5).innerText
           break
         }
       }
@@ -98,9 +102,9 @@ export class AppComponent implements OnInit {
   }
   rmBookButton() {
     //let bookToDelete = { name: "", description: "", author: "", createdDate: "" }
-    let bookToDelete = this.getBookToRemove()
-    this.http.delete<any>("/removebook", {body: bookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
-    console.log("data deleted: ", bookToDelete)
+    let targetBookToDelete = this.getBookToRemove()
+    this.http.delete<any>("/removebook", {body: targetBookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
+    console.log("data deleted: ", targetBookToDelete)
   }
   getDate() {
     const today = new Date();
