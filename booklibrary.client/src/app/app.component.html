@@ -1,27 +1,29 @@
-<div style="width: 80%;">
-  <h1 id="tableLabel">Book Library Manager</h1>
+<div class="w-4/5 mx-auto my-6">
+  <h1 class="text-3xl" id="tableLabel">Book Library Manager</h1>
   <p *ngIf="!books"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-  <button type="button" (click)="addBookButton()">Add</button>
-  <button type="button" (click)="rmBookButton()">Remove</button>
-  <table *ngIf="books" style="margin: 20px 0">
-      <thead>
+  <div class="flex my-6 gap-2" id="buttonControls">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" (click)="addBookButton()">Add</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" (click)="rmBookButton()">Remove</button>
+  </div>
+  <table class="mx-0 w-full text-md text-left rtl:text-right border" *ngIf="books">
+      <thead class="text-md uppercase bg-gray-50 border-b">
           <tr>
-              <th></th>
-              <th>bookid</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Author</th>
-              <th>Created Date</th>
+              <th class="px-6 px-3"></th>
+              <th class="px-6 px-3">bookid</th>
+              <th class="px-6 px-3">Name</th>
+              <th class="px-6 px-3">Description</th>
+              <th class="px-6 px-3">Author</th>
+              <th class="px-6 px-3">Created Date</th>
           </tr>
       </thead>
       <tbody #tableBookBody>
-          <tr *ngFor="let book of books">
-              <td #rowInputBox><input type="checkbox"></td>
-              <td>{{ book.bookid }}</td>
-              <td>{{ book.name }}</td>
-              <td>{{ book.description }}</td>
-              <td>{{ book.author }}</td>
-              <td>{{ book.createdDate }}</td>
+          <tr *ngFor="let book of books" class="bg-white border-b">
+              <td class="px-6 px-3" #rowInputBox><input type="checkbox"></td>
+              <td class="px-6 px-3">{{ book.bookid }}</td>
+              <td class="px-6 px-3">{{ book.name }}</td>
+              <td class="px-6 px-3">{{ book.description }}</td>
+              <td class="px-6 px-3">{{ book.author }}</td>
+              <td class="px-6 px-3">{{ book.createdDate }}</td>
           </tr>
       </tbody>
   </table>
