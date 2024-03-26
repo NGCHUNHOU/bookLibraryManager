@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core';
 
 class Book {
+  bookid: string = ""
   name: string = ""
   description: string = ""
   author: string = ""
@@ -15,6 +16,7 @@ class Book {
 })
 export class AppComponent implements OnInit {
   @ViewChild('tableBookBody') tableBookBody?: ElementRef
+  @ViewChildren('rowInputBox') rowInputBox!: QueryList<ElementRef>
   //private currentTableBody : HTMLTableElement | null = document.querySelector("#tableBookBody")
   public books: Book[] = [];
   private bookPostData: Book
@@ -78,13 +80,26 @@ export class AppComponent implements OnInit {
     this.makeEditableTableRow()
     //this.books.push({ name: "add book", description: "add book desciption", author: "book author", createdDate: this.getDate() })
   }
-
+  getBookToRemove() {
+    let bookToRemove = {}
+    if (this.rowInputBox != undefined) {
+      for (const ele of this.rowInputBox) {
+        let curr_checkbox_inrow = ele.nativeElement.firstChild
+        if (curr_checkbox_inrow.checked) {
+          let curr_tablerow = curr_checkbox_inrow.parentNode.parentNode
+          let childs = curr_tablerow.children
+          bookToRemove = { bookid: childs.item(1).innerText,  name: childs.item(2).innerText, description: childs.item(3).innerText, author: childs.item(4).innerText, createdDate: childs.item(5).innerText }
+          break
+        }
+      }
+    }
+    return bookToRemove
+  }
   rmBookButton() {
-    let bookToDelete = {name:"", description: "", author: "", createdDate: ""}
-    this.http.delete<any>("/xxx", {body: bookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
+    //let bookToDelete = { name: "", description: "", author: "", createdDate: "" }
+    let bookToDelete = this.getBookToRemove()
+    this.http.delete<any>("/removebook", {body: bookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
     console.log("data deleted: ", bookToDelete)
-    //this.http.delete<any>('/removebook', ).subscribe((res) => console.log(res), (err) => console.log(err))
-    //console.log("data removed: ", this.bookPostData)
   }
   getDate() {
     const today = new Date();

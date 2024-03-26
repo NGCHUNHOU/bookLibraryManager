@@ -6,6 +6,8 @@
   <table *ngIf="books" style="margin: 20px 0">
       <thead>
           <tr>
+              <th></th>
+              <th>bookid</th>
               <th>Name</th>
               <th>Description</th>
               <th>Author</th>
@@ -14,6 +16,8 @@
       </thead>
       <tbody #tableBookBody>
           <tr *ngFor="let book of books">
+              <td #rowInputBox><input type="checkbox"></td>
+              <td>{{ book.bookid }}</td>
               <td>{{ book.name }}</td>
               <td>{{ book.description }}</td>
               <td>{{ book.author }}</td>
