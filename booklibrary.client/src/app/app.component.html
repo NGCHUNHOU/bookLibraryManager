@@ -25,4 +25,8 @@
           </tr>
       </tbody>
   </table>
+  <dialog #infoBox>
+    <button (click)="closeModal($event)">X</button>
+    <p #infoMsg></p>
+  </dialog>
 </div>

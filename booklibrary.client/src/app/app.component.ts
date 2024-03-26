@@ -16,6 +16,8 @@ class Book {
 })
 export class AppComponent implements OnInit {
   @ViewChild('tableBookBody') tableBookBody?: ElementRef
+  @ViewChild('infoBox') infoBox?: ElementRef
+  @ViewChild('infoMsg') infoMsg?: ElementRef
   @ViewChildren('rowInputBox') rowInputBox!: QueryList<ElementRef>
   //private currentTableBody : HTMLTableElement | null = document.querySelector("#tableBookBody")
   public books: Book[] = [];
@@ -26,6 +28,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getBooks();
+  }
+
+  closeModal(event: Event) {
+    let currDialog = (<HTMLDialogElement>(<HTMLElement>event.target).parentNode)
+    currDialog.close()
+    window.location.reload()
   }
 
   initBookPostData(event : KeyboardEvent) {
@@ -46,8 +54,19 @@ export class AppComponent implements OnInit {
     }
   }
   postAddBook() {
-    this.http.post<any>('/addbook', this.bookPostData).subscribe((res) => console.log(res), (err) => console.log(err))
-    console.log("data posted: ", this.bookPostData)
+    //this.http.post<any>('/addbook', this.bookPostData).subscribe((res) => console.log(res), (err) => console.log(err))
+    this.http.post<any>('/addbook', this.bookPostData).subscribe({
+      error: (err) => {
+        console.log(err)
+      },
+      next: (res) => {
+        console.log("response",res)
+        let addMessageBox = this.infoBox?.nativeElement
+        let addMessage = this.infoMsg?.nativeElement
+        addMessage.innerText = "the row is successfully added into the table"
+        addMessageBox.showModal()
+      },
+    })
   }
 
   makeEditableTableRow() {
@@ -101,10 +120,20 @@ export class AppComponent implements OnInit {
     return bookToRemove
   }
   rmBookButton() {
-    //let bookToDelete = { name: "", description: "", author: "", createdDate: "" }
     let targetBookToDelete = this.getBookToRemove()
-    this.http.delete<any>("/removebook", {body: targetBookToDelete}).subscribe((res) => console.log(res), (err) => console.log(err))
-    console.log("data deleted: ", targetBookToDelete)
+    // this.http.delete<any>("/removebook", { body: targetBookToDelete }).subscribe((res) => console.log(res), (err) => console.log(err));
+    this.http.delete<any>("/removebook", { body: targetBookToDelete }).subscribe({
+      error: (err) => {
+        console.log(err)
+      },
+      next: (res) => {
+        console.log("response",res)
+        let removeMessageBox = this.infoBox?.nativeElement
+        let removeMessage = this.infoMsg?.nativeElement
+        removeMessage.innerText = "the row is successfully removed from the table"
+        removeMessageBox.showModal()
+      },
+    });
   }
   getDate() {
     const today = new Date();

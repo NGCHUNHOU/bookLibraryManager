@@ -21,14 +21,6 @@ namespace bookLibrary.Server.Controllers
         [HttpGet(Name = "Book")]
         public async Task<IActionResult> Get()
         {
-            // hard code book data
-            //var bookData = new List<Book>();
-            //var dateNow = DateOnly.FromDateTime(DateTime.Now);
-            //if (bookData != null) {
-            //    bookData.Add(new Book { Name = "Harry Potter", Description = "Test Description", Author = "foo", CreatedDate = dateNow.ToString()});
-            //    bookData.Add(new Book { Name = "Weather Book", Description = "Weather Description", Author = "bar", CreatedDate = dateNow.ToString()});
-            //    return bookData;
-            //}
             var bookData = await _bLContext.tblBook.ToListAsync<Book>();
             if (bookData == null) { 
                 return NotFound(); 
