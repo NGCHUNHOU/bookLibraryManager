@@ -150,14 +150,10 @@ export class AppComponent implements OnInit {
   }
 
   getBooks() {
-    this.http.get<Book[]>('/book').subscribe(
-      (result) => {
-        this.books = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    this.http.get<Book[]>('/book').subscribe({
+      error: (err) => { console.log(err) },
+      next: (res) => { this.books = res},
+    });
   }
 
   title = 'booklibrary.client';
