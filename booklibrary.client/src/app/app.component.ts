@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef} from '@angular/core';
 
 class Book {
-  bookid: string = ""
+  bookid: number = 0
   name: string = ""
   description: string = ""
   author: string = ""
@@ -33,10 +33,11 @@ export class AppComponent implements OnInit {
       let currrow = (<HTMLElement>(<HTMLElement>event.target).parentNode).parentNode
       if (currrow !== null) {
         let arr: Element[] = Array.from(currrow.children)
-        let nameInput = (<HTMLInputElement>arr[0].firstChild).value
-        let descriptionInput = (<HTMLInputElement>arr[1].firstChild).value
-        let authorInput = (<HTMLInputElement>arr[2].firstChild).value
-        let createdDate = (<HTMLInputElement>arr[3].firstChild).value
+        //let bookidInput = (<HTMLInputElement>arr[1].firstChild).value
+        let nameInput = (<HTMLInputElement>arr[2].firstChild).value
+        let descriptionInput = (<HTMLInputElement>arr[3].firstChild).value
+        let authorInput = (<HTMLInputElement>arr[4].firstChild).value
+        let createdDate = (<HTMLInputElement>arr[5].firstChild).value
         this.bookPostData.name = nameInput
         this.bookPostData.description = descriptionInput
         this.bookPostData.author = authorInput
