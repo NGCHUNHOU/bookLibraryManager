@@ -4,6 +4,7 @@ const PROXY_CONFIG = [
       "/weatherforecast",
       "/book",
       "/addbook",
+      "/editbook",
       "/removebook"
     ],
     target: "https://localhost:7019",

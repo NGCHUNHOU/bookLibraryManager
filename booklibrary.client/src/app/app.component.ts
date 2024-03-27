@@ -100,6 +100,75 @@ export class AppComponent implements OnInit {
     this.makeEditableTableRow()
     //this.books.push({ name: "add book", description: "add book desciption", author: "book author", createdDate: this.getDate() })
   }
+  getBook() {
+    let curr_tablerow = null
+      for (const ele of this.rowInputBox) {
+        let curr_checkbox_inrow = ele.nativeElement.firstChild
+        if (curr_checkbox_inrow.checked) {
+          curr_tablerow = curr_checkbox_inrow.parentNode.parentNode
+          return curr_tablerow
+        }
+      }
+      return null
+  }
+  putEditBook(targetRow : KeyboardEvent) {
+    let currentInputNode = targetRow.target
+    let currentRow = null
+    if (currentInputNode !== null) {
+      currentRow = (<HTMLElement>(<HTMLElement>currentInputNode).parentNode).parentNode
+      if (currentRow !== null) {
+        let childs = <HTMLCollection>currentRow.children
+        let bookToEdit = new Book()
+        bookToEdit.bookid = parseInt(<string>(<HTMLInputElement>(<HTMLElement>childs.item(1)).firstChild).value)
+        bookToEdit.name = (<HTMLInputElement>(<HTMLElement>childs.item(2)).firstChild).value
+        bookToEdit.description = (<HTMLInputElement>(<HTMLElement>childs.item(3)).firstChild).value
+        bookToEdit.author = (<HTMLInputElement>(<HTMLElement>childs.item(4)).firstChild).value
+        bookToEdit.createdDate = (<HTMLInputElement>(<HTMLElement>childs.item(5)).firstChild).value
+        debugger
+        this.http.put<any>("/editbook", bookToEdit).subscribe({
+          error: (err) => {
+            console.log(err)
+          },
+          next: (res) => {
+            console.log("response",res)
+            let removeMessageBox = this.infoBox?.nativeElement
+            let removeMessage = this.infoMsg?.nativeElement
+            removeMessage.innerText = "the row is successfully updated in the table"
+            removeMessageBox.showModal()
+          },
+        });
+      }
+    }
+  }
+  inputizeBook(bookRow: HTMLCollection) {
+    let bookidNode = <HTMLTableCellElement>bookRow.item(1)
+    let nameNode = <HTMLTableCellElement>bookRow.item(2)
+    let descriptionNode = <HTMLTableCellElement>bookRow.item(3)
+    let authorNode = <HTMLTableCellElement>bookRow.item(4)
+    let createdDateNode = <HTMLTableCellElement>bookRow.item(5)
+    for (let node of [bookidNode, nameNode, descriptionNode, authorNode, createdDateNode]) {
+      let value = node.innerText
+      node.innerText = ""
+      let inputNode = document.createElement("input")
+      inputNode.value = value
+      inputNode.addEventListener("keypress", (event) => {
+        if (event.key == "Enter") {
+          event.preventDefault()
+          this.putEditBook(event)
+        }
+      })
+      node.appendChild(inputNode)
+    }
+  }
+  editBookButton() {
+    let targetBook = this.getBook()
+    if (targetBook === null) {
+      console.log("editBookButton(): no book is selected")
+    } else {
+      let bookdata = <HTMLCollection>(targetBook).children
+      this.inputizeBook(bookdata)
+    }
+  }
   getBookToRemove() {
     let bookToRemove = new Book()
     if (this.rowInputBox != undefined) {
