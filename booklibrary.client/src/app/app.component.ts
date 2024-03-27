@@ -124,7 +124,6 @@ export class AppComponent implements OnInit {
         bookToEdit.description = (<HTMLInputElement>(<HTMLElement>childs.item(3)).firstChild).value
         bookToEdit.author = (<HTMLInputElement>(<HTMLElement>childs.item(4)).firstChild).value
         bookToEdit.createdDate = (<HTMLInputElement>(<HTMLElement>childs.item(5)).firstChild).value
-        debugger
         this.http.put<any>("/editbook", bookToEdit).subscribe({
           error: (err) => {
             console.log(err)
