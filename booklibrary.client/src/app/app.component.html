@@ -28,8 +28,10 @@
           </tr>
       </tbody>
   </table>
-  <dialog #infoBox>
-    <button (click)="closeModal($event)">X</button>
+  <dialog #infoBox class="w-2/5 h-1/5 p-2">
+    <div class="flex justify-end">
+      <button type="button" (click)="closeModal($event)">X</button>
+    </div>
     <p #infoMsg></p>
   </dialog>
 </div>

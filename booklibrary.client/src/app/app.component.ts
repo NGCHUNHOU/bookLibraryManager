@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   }
 
   closeModal(event: Event) {
-    let currDialog = (<HTMLDialogElement>(<HTMLElement>event.target).parentNode)
+    let currDialog = (<HTMLDialogElement>(<HTMLElement>(<HTMLElement>event.target).parentNode).parentNode)
     currDialog.close()
     window.location.reload()
   }
